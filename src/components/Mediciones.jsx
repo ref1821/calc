@@ -2,88 +2,51 @@ import React, {useState} from 'react'
 import {Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper} from '@mui/material';
 
 export const Mediciones = () => {
-    const [message, setMessage] = useState();
+    const [message, setMessage] = useState(parseFloat());
     const [group, setGroup] = useState([]);
     const [mediav, setMediav] = useState(0);
+    const [numb, setNumb] = useState(parseFloat(group.length))
 
+    
     const handleChange = event => {
         setMessage(event.target.value);
     };
 
     const addChange = () => {
-        group.push(message)
+        group.push(parseFloat(message))
         console.log(group)
-        setMessage('');
-        console.log(group)
-    };
-    const submitChange = () => {
-        return 
-            
+        var length = group.length
+        setMediav((parseFloat(mediav)+parseFloat(message))/length);
+        setMediav(mediav.toFixed(2))
+        setMessage(0);
         
     };
-
-    function createData(medicion, media, absoluto, relativo, potencial) {
-        return {medicion, media, absoluto, relativo, potencial};
+    const submitChange = () => {
+        return
+        
     };
+    const renderListOfUserNames = (names) => {
     
-    
+        return names.map(name => <li>x {name} |media {mediav} |Ea {Math.abs(name-mediav)} |Er {(mediav/name).toFixed(2)} |Ep {(mediav/name).toFixed(2)*100}</li>)
+    }
 
-    const mediax=[     
-        group.map((x) => 
-            parseFloat(x)+parseFloat(mediav),
-        ),
-    ];
+    return (
+        <div>
+            <input
+            id="message"
+            name="message"
+            type='number'
+            onChange={handleChange}
+            value={message}
+            />
 
-    
-    const rows = [
-        createData(group[0], mediax),
-        createData(group[1]),
-        createData(group[2]),
-        createData(group[3]),
-        createData(group[4]),
-        createData(group[5]),
-    ];
-
-  return (
-    <div>
-        <input
-        id="message"
-        name="message"
-        type="number"
-        onChange={handleChange}
-        value={message}
-        />
-
-        <Button onClick={addChange}>add</Button>
-        <Button onClick={submitChange}>Submit</Button>
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell align="right">X</TableCell>
-                        <TableCell align="right">Media</TableCell>
-                        <TableCell align="right">E absoluto</TableCell>
-                        <TableCell align="right">E relativo</TableCell>
-                        <TableCell align="right">E potencial</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map((row) => (
-                        <TableRow
-                        key={row.name}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                        
-                        <TableCell align="right">{row.medicion}</TableCell>
-                        <TableCell align="right">{row.media}</TableCell>
-                        <TableCell align="right">{row.absoluto}</TableCell>
-                        <TableCell align="right">{row.relativo}</TableCell>
-                        <TableCell align="right">{row.potencial}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    </div>
-  )
+            <Button onClick={addChange}>add</Button>
+            <Button onClick={submitChange}>Submit</Button>
+            <p>{group}</p>
+            
+            <div>
+                {renderListOfUserNames(group)}
+            </div>
+        </div>
+    )
 }

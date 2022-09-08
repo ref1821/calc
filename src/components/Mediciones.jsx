@@ -1,5 +1,22 @@
 import React, {useState} from 'react'
 import {Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper} from '@mui/material';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+
+const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+      primary: {
+        main:'#b71540',
+      },
+      secondary:{
+        main:'#1e3799',
+      },
+      
+    },
+  });
+  
 
 export const Mediciones = () => {
     const [message, setMessage] = useState(parseFloat());
@@ -16,37 +33,34 @@ export const Mediciones = () => {
         group.push(parseFloat(message))
         console.log(group)
         var length = group.length
-        setMediav((parseFloat(mediav)+parseFloat(message))/length);
-        setMediav(mediav.toFixed(2))
-        setMessage(0);
-        
-    };
-    const submitChange = () => {
-        return
-        
+        var sumada = parseFloat(sumada) + parseFloat(message)
+        console.log(parseFloat(mediav), parseFloat(message), length)
+        setMediav((parseFloat(sumada)/parseFloat(length)).toFixed(2));
+        setMessage('');  
+        console.log(mediav)
     };
     const renderListOfUserNames = (names) => {
     
-        return names.map(name => <li>x {name} |media {mediav} |Ea {Math.abs(name-mediav)} |Er {(mediav/name).toFixed(2)} |Ep {(mediav/name).toFixed(2)*100}</li>)
+        return names.map(name => <li>x {name} |media {mediav} |Ea {(Math.abs(name-mediav)).toFixed(2)} |Er {((Math.abs(name-mediav)).toFixed(2)/mediav).toFixed(4)} |Ep {(Math.abs(name-mediav)).toFixed(2)} |Er {((((Math.abs(name-mediav)).toFixed(2)/mediav).toFixed(4)*100).toFixed(2))}%</li>)
     }
 
     return (
-        <div>
-            <input
-            id="message"
-            name="message"
-            type='number'
-            onChange={handleChange}
-            value={message}
-            />
-
-            <Button onClick={addChange}>add</Button>
-            <Button onClick={submitChange}>Submit</Button>
-            <p>{group}</p>
-            
+        <ThemeProvider theme={darkTheme}>
+            <CssBaseline />
             <div>
-                {renderListOfUserNames(group)}
+                <input
+                id="message"
+                name="message"
+                type='number'
+                onChange={handleChange}
+                value={message}
+                />
+
+                <Button onClick={addChange}>add</Button>
+                <div>
+                    {renderListOfUserNames(group)}
+                </div>
             </div>
-        </div>
+        </ThemeProvider>
     )
 }

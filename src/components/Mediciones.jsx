@@ -32,16 +32,15 @@ export const Mediciones = () => {
     const addChange = () => {
         group.push(parseFloat(message))
         console.log(group)
-        var length = group.length
-        var sumada = parseFloat(sumada) + parseFloat(message)
-        console.log(parseFloat(mediav), parseFloat(message), length)
-        setMediav((parseFloat(sumada)/parseFloat(length)).toFixed(2));
         setMessage('');  
-        console.log(mediav)
+        
     };
     const renderListOfUserNames = (names) => {
-    
-        return names.map(name => <li>x {name} |media {mediav} |Ea {(Math.abs(name-mediav)).toFixed(2)} |Er {((Math.abs(name-mediav)).toFixed(2)/mediav).toFixed(4)} |Ep {(Math.abs(name-mediav)).toFixed(2)} |Er {((((Math.abs(name-mediav)).toFixed(2)/mediav).toFixed(4)*100).toFixed(2))}%</li>)
+        names.map(name => {
+            setMediav(parseFloat(mediav) + parseFloat(name))
+            return <li>x {name} |media {mediav} |Ea {(Math.abs(name-mediav)).toFixed(2)} |Er {((Math.abs(name-mediav)).toFixed(2)/mediav).toFixed(4)} |Ep {(Math.abs(name-mediav)).toFixed(2)} |Er {((((Math.abs(name-mediav)).toFixed(2)/mediav).toFixed(4)*100).toFixed(2))}%</li>
+        })
+        
     }
 
     return (
